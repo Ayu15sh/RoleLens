@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import type { ChangeEvent } from 'react';
-import { analyzeMatch } from '../services/api';
+import { analyzeMatch } from '../services/rag';
+import { extractTextFromPDF } from '../services/pdf';
 import type { MatchResponse } from '../types';
 import { MatchResults } from '../components/MatchResults';
 
@@ -64,21 +65,29 @@ export function HomePage() {
 
     try {
       setStatus('analyzing');
-      const formData = new FormData();
       
+      let parsedResume = '';
       if (resumeType === 'text') {
-        formData.append('resumeText', resumeText.trim());
+        parsedResume = resumeText.trim();
       } else if (resumeFile) {
-        formData.append('resumeFile', resumeFile);
+        parsedResume = await extractTextFromPDF(resumeFile);
       }
 
+      let parsedJd = '';
       if (jdType === 'text') {
-        formData.append('jobDescriptionText', jobDescription.trim());
+        parsedJd = jobDescription.trim();
       } else if (jdFile) {
-        formData.append('jobDescriptionFile', jdFile);
+        parsedJd = await extractTextFromPDF(jdFile);
       }
 
-      const matchResult = await analyzeMatch(formData);
+      if (parsedResume.length < 50) {
+        throw new Error('Resume is too short — provide at least 50 characters of text or a valid PDF');
+      }
+      if (parsedJd.length < 20) {
+        throw new Error('Job description is too short — provide at least 20 characters of text or a valid PDF');
+      }
+
+      const matchResult = await analyzeMatch(parsedResume, parsedJd);
       setResult(matchResult);
       setStatus('done');
 

@@ -8,7 +8,8 @@ import { config } from '../../config';
  */
 const openai = new OpenAI({
   apiKey: config.llmApiKey,
-  baseURL: config.llmProvider === 'gemini' ? 'https://generativelanguage.googleapis.com/v1beta/openai/' : undefined,
+  baseURL: config.llmProvider === 'gemini' ? (typeof window !== 'undefined' ? window.location.origin : '') + '/gemini-api/v1beta/openai/' : undefined,
+  dangerouslyAllowBrowser: true,
 });
 
 /**

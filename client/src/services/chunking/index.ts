@@ -1,4 +1,4 @@
-import { Chunk } from '../../types';
+import type { Chunk } from '../../types';
 import { config } from '../../config';
 
 /**
@@ -90,9 +90,10 @@ function splitByParagraphs(
     if (estimateTokenCount(combined) > maxSize && currentChunk) {
       // Save current chunk and start a new one
       chunks.push({
+        id: `chunk-${chunkIdx}`,
         content: currentChunk.trim(),
         section,
-        index: chunkIdx++,
+        chunk_index: chunkIdx++,
         tokenCount: estimateTokenCount(currentChunk.trim()),
       });
 
@@ -108,9 +109,10 @@ function splitByParagraphs(
   // Don't forget the last chunk
   if (currentChunk.trim()) {
     chunks.push({
+      id: `chunk-${chunkIdx}`,
       content: currentChunk.trim(),
       section,
-      index: chunkIdx,
+      chunk_index: chunkIdx,
       tokenCount: estimateTokenCount(currentChunk.trim()),
     });
   }
@@ -186,9 +188,10 @@ export function chunkResume(rawText: string): Chunk[] {
     if (tokenCount <= maxSize) {
       // Section fits in one chunk
       chunks.push({
+        id: `chunk-${globalIndex}`,
         content: sectionText,
         section: section.section,
-        index: globalIndex++,
+        chunk_index: globalIndex++,
         tokenCount,
       });
     } else {

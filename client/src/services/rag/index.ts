@@ -1,9 +1,9 @@
 import { chunkResume } from '../chunking';
-import { generateEmbeddings, generateEmbedding } from '../embedding';
+import { generateEmbeddings } from '../embedding';
 import { searchSimilarChunksInMemory } from '../retrieval';
-import { buildMatchPrompt, buildJobExtractionPrompt } from '../llm/prompts';
+import { buildMatchPrompt } from '../llm/prompts';
 import { generateMatchAnalysis } from '../llm';
-import { MatchResponse, Chunk } from '../../types';
+import type { MatchResponse } from '../../types';
 import { config } from '../../config';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -75,6 +75,6 @@ export async function analyzeMatch(
     retrievedChunks,
     resumeId,
     jobDescriptionId,
-    createdAt: new Date(),
+    createdAt: new Date().toISOString(),
   };
 }

@@ -1,4 +1,4 @@
-import { RetrievedChunk } from '../../types';
+import type { RetrievedChunk } from '../../types';
 
 /**
  * Build the RAG prompt that will be sent to the LLM.

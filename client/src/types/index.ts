@@ -9,12 +9,16 @@ export interface MatchAnalysis {
   explanation: string;
 }
 
-export interface RetrievedChunk {
+export interface Chunk {
   id: string;
   content: string;
   section: string | null;
-  similarity: number;
   chunk_index: number;
+  tokenCount: number;
+}
+
+export interface RetrievedChunk extends Chunk {
+  similarity: number;
 }
 
 export interface ResumeResponse {

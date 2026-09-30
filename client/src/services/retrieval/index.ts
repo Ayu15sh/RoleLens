@@ -1,4 +1,4 @@
-import { Chunk, RetrievedChunk } from '../../types';
+import type { Chunk, RetrievedChunk } from '../../types';
 import { generateEmbedding } from '../embedding';
 import { config } from '../../config';
 
@@ -40,11 +40,12 @@ export async function searchSimilarChunksInMemory(
   const scoredChunks = resumeChunks.map(chunk => {
     const similarity = cosineSimilarity(jobEmbedding, chunk.embedding);
     return {
-      id: `chunk-${chunk.index}`,
+      id: `chunk-${chunk.chunk_index}`,
       content: chunk.content,
       section: chunk.section,
       similarity,
-      chunk_index: chunk.index,
+      chunk_index: chunk.chunk_index,
+      tokenCount: chunk.tokenCount,
     };
   });
 

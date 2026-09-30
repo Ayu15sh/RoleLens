@@ -1,6 +1,6 @@
 import { openai } from '../embedding';
 import { config } from '../../config';
-import { MatchAnalysis } from '../../types';
+import type { MatchAnalysis } from '../../types';
 import { z } from 'zod';
 
 /**
